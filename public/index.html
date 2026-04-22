@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3rd Space Content Intelligence Engine</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #e8e6e1; font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .container { text-align: center; padding: 40px; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h1 span { color: #c4a04e; }
+  p { color: #8a8a95; margin-bottom: 20px; }
+  .badge { display: inline-block; background: rgba(196,160,78,0.15); color: #c4a04e; padding: 4px 12px; border-radius: 4px; font-size: 12px; margin-bottom: 24px; }
+  .api-test { background: #1a1a25; border: 1px solid #2a2a3a; border-radius: 12px; padding: 24px; max-width: 500px; margin: 0 auto; }
+  .api-test h2 { font-size: 18px; color: #c4a04e; margin-bottom: 12px; }
+  input { width: 100%; padding: 10px 16px; background: #12121a; border: 1px solid #2a2a3a; border-radius: 8px; color: #e8e6e1; font-size: 14px; outline: none; margin-bottom: 12px; }
+  input:focus { border-color: #c4a04e; }
+  button { padding: 10px 24px; background: #c4a04e; border: none; border-radius: 8px; color: #000; font-size: 14px; font-weight: 700; cursor: pointer; }
+  button:hover { opacity: 0.85; }
+  #result { margin-top: 16px; text-align: left; font-size: 13px; color: #8a8a95; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+  .note { margin-top: 20px; font-size: 11px; color: #555566; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>3rd <span>Space</span></h1>
+  <div class="badge">Content Intelligence Engine v5</div>
+  <p>Full dashboard deploying soon. Show Analyzer API is live.</p>
+  <div class="api-test">
+    <h2>Show Analyzer</h2>
+    <p style="font-size:13px; color:#8a8a95;">Ask about any TV show, movie, or book to get fandom crossover intelligence.</p>
+    <input type="text" id="query" placeholder="Try: Stranger Things, House of the Dragon, Bridgerton..." />
+    <button onclick="analyzeShow()">Analyze</button>
+    <div id="result"></div>
+  </div>
+  <p class="note">Powered by Claude AI + 3rd Space Fandom Intelligence</p>
+</div>
+<script>
+function analyzeShow() {
+  const q = document.getElementById('query').value.trim();
+  if (!q) return;
+  const el = document.getElementById('result');
+  el.textContent = 'Analyzing ' + q + '...';
+  fetch('/api/analyze-show?q=' + encodeURIComponent(q))
+    .then(r => r.json())
+    .then(d => { el.textContent = JSON.stringify(d, null, 2); })
+    .catch(e => { el.textContent = 'Error: ' + e.message; });
+}
+document.getElementById('query').addEventListener('keydown', e => { if (e.key === 'Enter') analyzeShow(); });
+</script>
+</body>
+</html>
